@@ -1,0 +1,30 @@
+* {
+  padding: 0px;
+  margin: 0px;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgb(218, 212, 199);
+}
+
+.content {
+  /*display: table;*/
+}
+
+#sizeTest {
+  position: absolute;
+  top: -100px;
+  line-height: 1.2em;
+}
+
+#map {
+  font-family: menlo, monospace;
+  line-height: 1.2em;
+  color: white;
+}

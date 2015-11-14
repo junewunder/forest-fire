@@ -1,0 +1,8 @@
+{
+  "esnext": true,
+  "predef": [
+    "$",
+    "console",
+    "window"
+  ]
+}
