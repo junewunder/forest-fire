@@ -1,0 +1,32 @@
+{
+  "name": "forest-fire",
+  "version": "0.0.1",
+  "description": "Cellular Automatan",
+  "main": "index.js",
+  "scripts": {
+    "test": "open index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaywunder/forest-fire.git"
+  },
+  "keywords": [
+    "cellular",
+    "automatan",
+    "fire"
+  ],
+  "author": "Jacob Wunder",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jaywunder/forest-fire/issues"
+  },
+  "homepage": "https://github.com/jaywunder/forest-fire#readme",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-babel": "^6.0.0",
+    "load-grunt-tasks": "^3.3.0"
+  },
+  "babel": {
+    "presets": ["es2015"]
+  }
+}
