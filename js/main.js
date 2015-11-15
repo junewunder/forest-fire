@@ -20,8 +20,14 @@ class Forest {
     this.newFireProb = 0.00001;
   }
 
+  restart() {
+    this.createMap();
+    this.createMapElem();
+  }
+
   createMap() {
-    // console.log('creating the map...');
+    console.log('creating the map...');
+    this.map = [];
     for (var i = 0; i < this.height; i++){
       var row = [];
       for (var j = 0; j < this.width; j++)
@@ -31,7 +37,8 @@ class Forest {
   }
 
   createMapElem() {
-    // console.log('creating the map element...');
+    console.log('creating the map element...');
+    this.$mapElem.text('');
     for (var i = 0; i < this.map.length; i++) {
       for (var j = 0; j < this.map[i].length; j++) {
         this.$mapElem.append(
@@ -92,6 +99,7 @@ class Forest {
 
   speadTrees(x, y) {
     var positions = [[1, 1], [1, 0], [0, 1], [-1, -1], [-1, 0], [0, -1], [-1, 1], [-1, 1]];
+    // var positions = [[2, 2], [2, 0], [0, 2], [-2, -2], [-2, 0], [0, -2], [-2, 2], [-2, 2]];
     for (var i = 0; i < positions.length; i++) {
       if (Math.random() < this.spreadTreeProb) {
         var xN = x + positions[i][0];
@@ -199,3 +207,4 @@ gui.add(f, 'spreadTreeProb', 0, 0.1);
 gui.add(f, 'spreadFireProb', 0, 0.1);
 gui.add(f, 'newTreeProb', 0, 0.1);
 gui.add(f, 'newFireProb', 0, 0.1);
+gui.add(f, 'restart');
