@@ -42,7 +42,7 @@ class Forest {
     for (var i = 0; i < this.map.length; i++) {
       for (var j = 0; j < this.map[i].length; j++) {
         this.$mapElem.append(
-          `<span id="tree-${j}-${i}">${this.map[i][j].symbol}</span>`
+          `<span id="tree-${j}-${i}" class="emj">${this.map[i][j].symbol}</span>`
         );
       }
       this.$mapElem.append( '<br>' );
@@ -86,20 +86,17 @@ class Forest {
   randomSpawns(x, y) {
     if (Math.random() < this.newTreeProb) {
       this.map[y][x].plant();
-      // this.render(x, y);
     }
 
     if (Math.random() < this.newFireProb) {
       if (this.map[y][x].id == TreeInfo.Tree.id) {
         this.map[y][x].heat();
-        // this.render(x, y);
       }
     }
   }
 
   speadTrees(x, y) {
     var positions = [[1, 1], [1, 0], [0, 1], [-1, -1], [-1, 0], [0, -1], [-1, 1], [-1, 1]];
-    // var positions = [[2, 2], [2, 0], [0, 2], [-2, -2], [-2, 0], [0, -2], [-2, 2], [-2, 2]];
     for (var i = 0; i < positions.length; i++) {
       if (Math.random() < this.spreadTreeProb) {
         var xN = x + positions[i][0];
@@ -109,8 +106,6 @@ class Forest {
           if (this.map[yN][xN].state == TreeInfo.Empty.state)
             this.map[yN][xN].plant();
         } catch (e) { }
-
-        // this.render(x, y);
       }
     }
   }
@@ -126,15 +121,13 @@ class Forest {
           if (this.map[yN][xN].state == TreeInfo.Tree.state)
             this.map[yN][xN].heat();
         } catch (e) { }
-
-        // this.render(x, y);
       }
     }
   }
 
   render(x, y) {
     // console.log(`rendering (${x}, ${y})`);
-    $(`#tree-${x}-${y}`).text(this.map[y][x].symbol);
+    $(`#tree-${x}-${y}`).html(this.map[y][x].symbol);
   }
 }
 
@@ -192,7 +185,7 @@ var TreeInfo = {
   Burning: {
     id: 3,
     state: 'burning',
-    symbol:'🔥'
+    symbol: '🔥'
   },
 };
 
