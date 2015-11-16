@@ -2,12 +2,15 @@
 /* jshint -W117 */
 'use strict';
 
+const DIRECTIONS = [[1, 1], [1, 0], [0, 1], [-1, -1], [-1, 0], [0, -1], [-1, 1], [-1, 1]];
+
 class Forest {
   constructor(width, height) {
     this.width = width || Math.floor($('.wrapper').width() / $('#sizeTest').width());
     this.height = height || Math.floor($('.wrapper').height() / $('#sizeTest').height());
     this.map = [];
     this.$mapElem = $('#map');
+    this.running = true;
 
     this.createMap();
     this.createMapElem();
@@ -15,9 +18,9 @@ class Forest {
     this.loseFireProb = 0.1;
     this.catchFireProb = 0.1;
     this.spreadTreeProb = 0.0025;
-    this.spreadFireProb = 0.1;
-    this.newTreeProb = 0.0001;
-    this.newFireProb = 0.00001;
+    this.spreadFireProb = 0.05;
+    this.newTreeProb = 0.00001; // oringinal: 0.0001
+    this.newFireProb = 0.00001; // oringinal: 0.00001
   }
 
   restart() {
@@ -28,9 +31,9 @@ class Forest {
   createMap() {
     console.log('creating the map...');
     this.map = [];
-    for (var i = 0; i < this.height; i++){
-      var row = [];
-      for (var j = 0; j < this.width; j++)
+    for (let i = 0; i < this.height; i++){
+      let row = [];
+      for (let j = 0; j < this.width; j++)
         row.push(new Tree());
       this.map.push(row);
     }
@@ -39,8 +42,8 @@ class Forest {
   createMapElem() {
     console.log('creating the map element...');
     this.$mapElem.text('');
-    for (var i = 0; i < this.map.length; i++) {
-      for (var j = 0; j < this.map[i].length; j++) {
+    for (let i = 0; i < this.map.length; i++) {
+      for (let j = 0; j < this.map[i].length; j++) {
         this.$mapElem.append(
           `<span id="tree-${j}-${i}" class="emj">${this.map[i][j].symbol}</span>`
         );
@@ -51,33 +54,35 @@ class Forest {
 
   update() {
     // console.log('updating');
-    for (var i = 0; i < this.map.length; i++) {
-      for (var j = 0; j < this.map[i].length; j++) {
+    if (this.running) {
+      for (let i = 0; i < this.map.length; i++) {
+        for (let j = 0; j < this.map[i].length; j++) {
 
-        this.randomSpawns(j, i);
+          this.randomSpawns(j, i);
 
-        switch (this.map[i][j].id) {
-          case TreeInfo.Empty.id:
-            break;
+          switch (this.map[i][j].id) {
+            case TreeInfo.Empty.id:
+              break;
 
-          case TreeInfo.Burning.id:
-            this.spreadFires(j, i);
+            case TreeInfo.Burning.id:
+              this.spreadFires(j, i);
 
-            if (Math.random() < this.loseFireProb)
-              this.map[i][j].destroy();
+              if (Math.random() < this.loseFireProb)
+                this.map[i][j].destroy();
 
-            break;
-          case TreeInfo.Heating.id:
-            if (Math.random() < this.catchFireProb)
-              this.map[i][j].burn();
+              break;
+            case TreeInfo.Heating.id:
+              if (Math.random() < this.catchFireProb)
+                this.map[i][j].burn();
 
-            break;
-          case TreeInfo.Tree.id:
-            this.speadTrees(j, i);
-            break;
+              break;
+            case TreeInfo.Tree.id:
+              this.speadTrees(j, i);
+              break;
+          }
+
+          this.render(j, i);
         }
-
-        this.render(j, i);
       }
     }
     window.setTimeout(() => this.update(), 1000 / 60);
@@ -96,11 +101,10 @@ class Forest {
   }
 
   speadTrees(x, y) {
-    var positions = [[1, 1], [1, 0], [0, 1], [-1, -1], [-1, 0], [0, -1], [-1, 1], [-1, 1]];
-    for (var i = 0; i < positions.length; i++) {
+    for (let i = 0; i < DIRECTIONS.length; i++) {
       if (Math.random() < this.spreadTreeProb) {
-        var xN = x + positions[i][0];
-        var yN = y + positions[i][1];
+        let xN = x + DIRECTIONS[i][0];
+        let yN = y + DIRECTIONS[i][1];
 
         try {
           if (this.map[yN][xN].state == TreeInfo.Empty.state)
@@ -111,11 +115,10 @@ class Forest {
   }
 
   spreadFires(x, y) {
-    var positions = [[1, 1], [1, 0], [0, 1], [-1, -1], [-1, 0], [0, -1], [-1, 1], [-1, 1]];
-    for (var i = 0; i < positions.length; i++) {
+    for (let i = 0; i < DIRECTIONS.length; i++) {
       if (Math.random() < this.spreadFireProb) {
-        var xN = x + positions[i][0];
-        var yN = y + positions[i][1];
+        let xN = x + DIRECTIONS[i][0];
+        let yN = y + DIRECTIONS[i][1];
 
         try {
           if (this.map[yN][xN].state == TreeInfo.Tree.state)
@@ -198,6 +201,7 @@ gui.add(f, 'loseFireProb', 0, 0.1);
 gui.add(f, 'catchFireProb', 0, 0.1);
 gui.add(f, 'spreadTreeProb', 0, 0.1);
 gui.add(f, 'spreadFireProb', 0, 0.1);
-gui.add(f, 'newTreeProb', 0, 0.1);
-gui.add(f, 'newFireProb', 0, 0.1);
+gui.add(f, 'newTreeProb', 0, 0.001);
+gui.add(f, 'newFireProb', 0, 0.001);
 gui.add(f, 'restart');
+gui.add(f, 'running');

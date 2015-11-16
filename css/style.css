@@ -63,24 +63,3 @@
 .emj {
   font-family: emoji, monospace;
 }
-
-/*.emoji {
-  width: 20px;
-  height: 20px;
-}
-
-.emoji.leaf {
-  src: url(../assets/em-leaf.png);
-}
-
-.emoji.tree {
-  src: url(../assets/em-tree.png);
-}
-
-.emoji.red-leaf {
-  src: url(../assets/em-red-leaf.png);
-}
-
-.emoji.burning {
-  src: url(../assets/em-fire.png);
-}*/
